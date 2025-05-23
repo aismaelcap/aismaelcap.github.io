@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Colours and Species</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+    }
+    h1 {
+      color: #333;
+    }
+    ul {
+      list-style-type: none;
+      padding: 0;
+    }
+    li {
+      background: #f0f0f0;
+      margin: 8px 0;
+      padding: 10px;
+      border-radius: 5px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Colours and Associated Species</h1>
+  <ul id="colourList">Loading...</ul>
+
+  <script>
+    const endpoint = 'https://devptswebaw1003.azurewebsites.net/api/colours';
+    const listElement = document.getElementById('colourList');
+
+    fetch(endpoint)
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        return response.json();
+      })
+      .then(data => {
+        listElement.innerHTML = ''; // Clear loading text
+        data.forEach(item => {
+          const li = document.createElement('li');
+          li.textContent = `Colour: ${item.name} | Species ID: ${item.speciesId}`;
+          listElement.appendChild(li);
+        });
+      })
+      .catch(error => {
+        listElement.innerHTML = `<li>Error fetching data: ${error.message}</li>`;
+      });
+  </script>
+</body>
+</html>
